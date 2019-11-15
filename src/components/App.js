@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useReducer, useEffect} from 'react';
 import './../App.css';
 import Header from "./Header";
 import Movie from "./Movie";
@@ -71,14 +71,24 @@ const App = () => {
         .then(response => response.json())
         .then(jsonResponse => {
           if (jsonResponse.Response === "True") {
-            setMovies(jsonResponse.Search);
-            setLoading(false);
+            // setMovies(jsonResponse.Search);
+            // setLoading(false);
+            dispatch({
+              type: "SEARCH_MOVIES_SUCCESS",
+              payload: jsonResponse.Search
+            });
           } else {
-            setErrorMessage(jsonResponse.Error);
-            setLoading(false);
+            // setErrorMessage(jsonResponse.Error);
+            // setLoading(false);
+            dispatch({
+              type: "SEARCH_MOVIES_FAILURE",
+              error: jsonResponse.Error
+            });
           }
       });
     };
+
+  const  { movies, errorMessage, loading } = state;
 
     return (
       <div className="App">
